@@ -39,3 +39,13 @@
 
 # debug information files
 *.dwo
+
+/.idea/codeStyles/codeStyleConfig.xml
+/.idea/.name
+/.idea/editor.xml
+/.idea/encodings.xml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/smart-file-organizer.iml
+/.idea/vcs.xml
+/.idea/workspace.xml

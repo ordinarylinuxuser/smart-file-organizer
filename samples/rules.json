@@ -1,0 +1,39 @@
+[
+  {
+    "rule_name": "Downloads",
+    "rule_description": "Rules for organizing downloads folder.",
+    "directory_path": "$HOME/Downloads",
+    "is_recursive_search": false,
+    "targets": [
+      {
+        "target_path": "$HOME/Downloads/Docs",
+        "match_any_condition": true,
+        "conditions": [
+          {
+            "condition_type": "EXTENSION_TYPE",
+            "extensions": [
+              "pdf",
+              "docx",
+              "txt"
+            ]
+          }
+        ]
+      },
+      {
+        "target_path": "$HOME/Downloads/Compressed",
+        "match_any_condition": true,
+        "conditions": [
+          {
+            "condition_type": "EXTENSION_TYPE",
+            "extensions": [
+              "zip",
+              "tar",
+              "gz",
+              "rar"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
