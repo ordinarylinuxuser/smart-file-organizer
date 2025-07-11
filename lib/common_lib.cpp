@@ -2,7 +2,6 @@
 // Created by ken on 7/10/25.
 
 #include "common_lib.h"
-#include <nlohmann/json.hpp>
 
 
 /**
@@ -11,39 +10,55 @@
  * @param recursive if true, will search recursively in subdirectories
  * @return returns directory entries that are regular files
  */
-std::vector<fs::directory_entry> getDirectoryEntries(const std::string &dir_path, const bool recursive) {
+std::vector<fs::directory_entry> getDirectoryEntries(const std::string& dir_path, const bool recursive)
+{
     std::vector<fs::directory_entry> entries;
-    try {
-        if (!fs::exists(dir_path)) {
-            std::cerr << "Error: Directory does not exist: " << dir_path << std::endl;
-            return entries;
+    try
+    {
+        if (!fs::exists(dir_path))
+        {
+            spdlog::error("Directory does not exists : {}", dir_path);
+            return {};
         }
         for (auto iterator = fs::recursive_directory_iterator(dir_path, fs::directory_options::skip_permission_denied);
-             const auto &entry: iterator) {
-            if (!recursive && iterator.depth() > 0) {
+             const auto& entry : iterator)
+        {
+            if (!recursive && iterator.depth() > 0)
+            {
                 continue; // Skip subdirectories if not recursive
             }
-            if (entry.is_regular_file()) {
+            if (entry.is_regular_file())
+            {
                 entries.push_back(entry);
             }
         }
-    } catch (const fs::filesystem_error &e) {
-        std::cerr << "Error: " << e.what() << std::endl;
+    }
+    catch (const fs::filesystem_error& e)
+    {
+        spdlog::error("Filesystem error: {}", e.what());
     }
     return entries;
 }
 
-std::vector<SmartRule> loadSmartRulesFromFile(const std::string &file_path) {
+std::vector<SmartRule> loadSmartRulesFromFile(const std::string& file_path)
+{
     //read json file
     std::ifstream file(file_path);
+
+    if (!file.is_open())
+    {
+        spdlog::error("Error: Could not open file: {}", file_path);
+        return {};
+    }
 
     nlohmann::json json_data = nlohmann::json::parse(file);
 
     std::vector<SmartRule> rules;
-    for (nlohmann::json &rule_json: json_data) {
+    for (nlohmann::json& rule_json : json_data)
+    {
         auto rule = SmartRule();
         rule.load_json(rule_json);
-        //rules.push_back(rule);
+        rules.push_back(rule);
     }
     return rules;
 }

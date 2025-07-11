@@ -10,10 +10,11 @@
 
 using json = nlohmann::json;
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[])
+{
     std::cout << "CLI Utility Running!\n";
     std::string dir_path = "/home/ken";
-    std::string rule_file_path = "/home/ken/Documents/gits/smart-file-organizer/samples/rules.json";
+    std::string rule_file_path = "/data/Docs/gits/smart-file-organizer/samples/rules.json";
 
     auto rules = loadSmartRulesFromFile(rule_file_path);
 
