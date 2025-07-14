@@ -52,6 +52,12 @@ void SmartRule::load_json(nlohmann::json& j)
                 conditionIterator->at("extensions").get_to(condition->extensions);
                 target.conditions.push_back(condition);
             }
+            else if (conditionIterator->at("condition_type") == "REGEX_TYPE")
+            {
+                auto condition = new RegexRuleCondition();
+                conditionIterator->at("regex").get_to(condition->regex);
+                target.conditions.push_back(condition);
+            }
             ++conditionIterator;
         }
         targets.push_back(target);
@@ -77,4 +83,23 @@ bool ExtensionRuleCondition::isConditionMatched(const std::string& file_path)
     const auto iterator = std::ranges::find(extensions, extension);
 
     return iterator != extensions.end();
+}
+
+/// Check if the file name matches the regex pattern.
+/// @param file_path the path of the file to check
+/// @return true if the file name matches the regex pattern, false otherwise
+bool RegexRuleCondition::isConditionMatched(const std::string& file_path)
+{
+    try
+    {
+        const auto path = fs::path(file_path);
+        const std::string file_name = path.filename().string() + path.extension().string();
+        const std::regex regex_pattern(regex);
+        return std::regex_match(file_name, regex_pattern);
+    }
+    catch (const std::regex_error& e)
+    {
+        spdlog::error("Error while matching regex pattern: {}", e.what());
+    }
+    return false;
 }

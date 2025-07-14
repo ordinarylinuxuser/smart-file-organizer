@@ -1,0 +1,28 @@
+{
+  "rule_name": "Regex Sample Rule",
+  "rule_description": "Rules for organizing folder based on regex.",
+  "directory_path": "$HOME/test/regex",
+  "is_recursive_search": false,
+  "targets": [
+    {
+      "target_path": "$HOME/test/starts-with-a",
+      "match_any_condition": true,
+      "conditions": [
+        {
+          "condition_type": "REGEX_TYPE",
+          "regex": "^a.*"
+        }
+      ]
+    },
+    {
+      "target_path": "$HOME/test/starts-with-b",
+      "match_any_condition": true,
+      "conditions": [
+        {
+          "condition_type": "REGEX_TYPE",
+          "regex": "^b.*"
+        }
+      ]
+    }
+  ]
+}

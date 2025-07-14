@@ -7,12 +7,15 @@
 
 #include <filesystem>
 #include <nlohmann/json.hpp>
+#include <regex>
+#include <spdlog/spdlog.h>
 
 namespace fs = std::filesystem;
 
 enum ConditionType
 {
-    EXTENSION_TYPE
+    EXTENSION_TYPE,
+    REGEX_TYPE
 };
 
 class RuleCondition
@@ -28,13 +31,26 @@ public:
     };
 };
 
-class ExtensionRuleCondition : public RuleCondition
+class ExtensionRuleCondition final : public RuleCondition
 {
 public:
     std::vector<std::string> extensions; // List of file extensions to match
     ExtensionRuleCondition()
     {
         condition_type = EXTENSION_TYPE;
+    }
+
+    bool isConditionMatched(const std::string& file_path) override;
+};
+
+class RegexRuleCondition final : public RuleCondition
+{
+public:
+    std::string regex;
+
+    RegexRuleCondition()
+    {
+        condition_type = REGEX_TYPE;
     }
 
     bool isConditionMatched(const std::string& file_path) override;

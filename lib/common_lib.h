@@ -15,9 +15,15 @@
 
 namespace fs = std::filesystem;
 
-std::vector<fs::directory_entry> getDirectoryEntries(const std::string& dir_path, const bool recursive = false);
+std::string expand_env_vars(const std::string& input);
 
-std::vector<SmartRule> loadSmartRulesFromFile(const std::string& file_path);
+bool isFileExtensionMatched(const std::string& file_path, const std::vector<std::string>& extensions);
+
+std::vector<fs::directory_entry> getDirectoryEntries(const std::string& dir_path, const bool recursive = false,
+                                                     const std::vector<std::string>& filterExtensions = {});
+
+std::vector<SmartRule> loadSmartRules(const std::string& rules_dir_path);
+
 
 #endif //COMMON_LIB_H
 
